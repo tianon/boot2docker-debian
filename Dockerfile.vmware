@@ -11,3 +11,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		open-vm-tools \
 		open-vm-tools-dkms \
 	&& rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /mnt/hgfs && chown -R docker:docker /mnt/hgfs
+RUN echo '.host:/ /mnt/hgfs vmhgfs uid=docker,gid=docker,noatime,nodiratime 0 0' >> /etc/fstab

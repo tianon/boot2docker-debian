@@ -13,4 +13,4 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /mnt/hgfs && chown -R docker:docker /mnt/hgfs
-RUN echo '.host:/ /mnt/hgfs vmhgfs uid=docker,gid=docker,noatime,nodiratime 0 0' >> /etc/fstab
+RUN echo '.host:/ /mnt/hgfs vmhgfs nofail,uid=docker,gid=docker,noatime,nodiratime 0 0' >> /etc/fstab

@@ -1,25 +1,63 @@
-docker.iso: docker.build
-	docker run --rm dockercore/iso sh -c 'build-iso.sh >&2 && cat /tmp/docker.iso' > docker.iso
-	ls -lh docker.iso
-
-base.iso: base.build
-	docker run --rm dockercore/iso:base sh -c 'build-iso.sh >&2 && cat /tmp/docker.iso' > docker-base.iso
-	ls -lh docker-base.iso
-
-%.iso: %.build
-	docker run --rm dockercore/iso:$(@:.iso=) sh -c 'build-iso.sh >&2 && cat /tmp/docker.iso' > docker-$@
-	ls -lh docker-$@
-
-all: docker.iso hyperv.iso virtualbox.iso vmware.iso
+all: boot2docker-base.iso boot2docker-generic.iso boot2docker-hyperv.iso boot2docker-virtualbox.iso boot2docker-vmware.iso
 	@echo; echo
-	ls -lh *.iso
+	@ls -lh $^
+.PHONY: all
 
 clean:
-	rm -v *.iso
+	rm -v boot2docker-*.iso
+.PHONY: clean
 
-base.build: Dockerfile.base
-	docker build -t dockercore/iso:base -f Dockerfile.base .
-docker.build: base.build Dockerfile.docker
-	docker build -t dockercore/iso -f Dockerfile.docker .
-%.build: docker.build Dockerfile.%
-	docker build -t dockercore/iso:$(@:.build=) -f Dockerfile.$(@:.build=) .
+boot2docker-base.iso: docker-build.base
+	docker run --rm dockercore/boot2docker:base sh -c 'build-iso.sh >&2 && cat /tmp/docker.iso' > $@
+	@ls -lh $@
+
+docker-build.base: Dockerfile.base scripts/generate-ssh-host-keys.sh inits/ssh-keygen.init scripts/initramfs-live-hook.sh scripts/initramfs-live-script.sh excludes scripts/build-rootfs.sh scripts/build-iso.sh
+	docker build -t dockercore/boot2docker:base -f $< .
+	@echo
+	@docker images dockercore/boot2docker | awk 'NR == 1 || $$2 == "base" { print }'
+	@echo
+.PHONY: docker-build.base
+
+boot2docker-generic.iso: docker-build.generic
+	docker run --rm dockercore/boot2docker:generic sh -c 'build-iso.sh >&2 && cat /tmp/docker.iso' > $@
+	@ls -lh $@
+
+docker-build.generic: Dockerfile.generic scripts/autoformat.sh inits/autoformat.init docker-build.base
+	docker build -t dockercore/boot2docker:generic -f $< .
+	@echo
+	@docker images dockercore/boot2docker | awk 'NR == 1 || $$2 == "generic" { print }'
+	@echo
+.PHONY: docker-build.generic
+
+boot2docker-hyperv.iso: docker-build.hyperv
+	docker run --rm dockercore/boot2docker:hyperv sh -c 'build-iso.sh >&2 && cat /tmp/docker.iso' > $@
+	@ls -lh $@
+
+docker-build.hyperv: Dockerfile.hyperv docker-build.generic
+	docker build -t dockercore/boot2docker:hyperv -f $< .
+	@echo
+	@docker images dockercore/boot2docker | awk 'NR == 1 || $$2 == "hyperv" { print }'
+	@echo
+.PHONY: docker-build.hyperv
+
+boot2docker-virtualbox.iso: docker-build.virtualbox
+	docker run --rm dockercore/boot2docker:virtualbox sh -c 'build-iso.sh >&2 && cat /tmp/docker.iso' > $@
+	@ls -lh $@
+
+docker-build.virtualbox: Dockerfile.virtualbox docker-build.generic
+	docker build -t dockercore/boot2docker:virtualbox -f $< .
+	@echo
+	@docker images dockercore/boot2docker | awk 'NR == 1 || $$2 == "virtualbox" { print }'
+	@echo
+.PHONY: docker-build.virtualbox
+
+boot2docker-vmware.iso: docker-build.vmware
+	docker run --rm dockercore/boot2docker:vmware sh -c 'build-iso.sh >&2 && cat /tmp/docker.iso' > $@
+	@ls -lh $@
+
+docker-build.vmware: Dockerfile.vmware docker-build.generic
+	docker build -t dockercore/boot2docker:vmware -f $< .
+	@echo
+	@docker images dockercore/boot2docker | awk 'NR == 1 || $$2 == "vmware" { print }'
+	@echo
+.PHONY: docker-build.vmware

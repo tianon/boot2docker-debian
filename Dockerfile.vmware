@@ -1,4 +1,4 @@
-FROM dockercore/iso
+FROM dockercore/boot2docker:generic
 
 RUN { \
 		echo 'VARIANT="VMware"'; \

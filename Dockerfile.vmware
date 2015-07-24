@@ -11,8 +11,3 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		open-vm-tools \
 		open-vm-tools-dkms \
 	&& rm -rf /var/lib/apt/lists/*
-
-# simple, dirty fix for being able to mount inside /Users and have that work
-RUN mkdir -p /Users && chgrp docker /Users && chmod g+rwx /Users
-# ... and /c/Users for Windows
-RUN mkdir -p /c/Users && chgrp -R docker /c && chmod g+rwx /c

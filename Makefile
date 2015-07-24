@@ -11,6 +11,11 @@ base.iso: base.build
 	ls -lh docker-$@
 
 all: docker.iso hyperv.iso virtualbox.iso vmware.iso
+	@echo; echo
+	ls -lh *.iso
+
+clean:
+	rm -v *.iso
 
 base.build: Dockerfile.base
 	docker build -t dockercore/iso:base -f Dockerfile.base .

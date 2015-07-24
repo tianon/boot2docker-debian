@@ -117,6 +117,6 @@ COPY scripts/initramfs-live-hook.sh /usr/share/initramfs-tools/hooks/live
 COPY scripts/initramfs-live-script.sh /usr/share/initramfs-tools/scripts/live
 
 COPY excludes /tmp/
-COPY scripts/build-iso.sh /usr/local/sbin/
+COPY scripts/build-rootfs.sh scripts/build-iso.sh /usr/local/sbin/
 
 #RUN build-iso.sh # creates /tmp/docker.iso

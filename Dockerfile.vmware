@@ -5,7 +5,12 @@ RUN { \
 		echo 'VARIANT_ID=vmware'; \
 	} >> /etc/os-release
 
-RUN apt-get update && apt-get install -y open-vm-tools && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends \
+		$(dpkg-query --show --showformat='${Package}\n' | awk '/^linux-image-[0-9]/ { gsub(/-image-/, "-headers-"); print }') \
+		\
+		open-vm-tools \
+		open-vm-tools-dkms \
+	&& rm -rf /var/lib/apt/lists/*
 
 # simple, dirty fix for being able to mount inside /Users and have that work
 RUN mkdir -p /Users && chgrp docker /Users && chmod g+rwx /Users

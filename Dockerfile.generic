@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		btrfs-tools \
 		iptables \
 		\
+		nfs-common \
 		parted \
 		util-linux \
 	&& rm -rf /var/lib/apt/lists/*

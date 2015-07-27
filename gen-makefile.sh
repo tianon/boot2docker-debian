@@ -45,5 +45,9 @@ docker-build.$variant: ${deps[*]}
 	@docker images $image | awk 'NR == 1 || \$\$2 == "$variant" { print }'
 	@echo
 .PHONY: docker-build.$variant
+
+audit-$variant: docker-build.$variant
+	docker run -it --rm $image:$variant sh -c 'audit-rootfs.sh 2>&1 | sort | less'
+.PHONY: audit-$variant
 EOB
 done

@@ -7,6 +7,7 @@ before_script:
   - env | sort
 
 script:
+  - make boot2docker-base.iso
   - make all -j$(nproc)
 
 # vim:set et ts=2 sw=2:

@@ -9,6 +9,7 @@ image='dockercore/boot2docker'
 
 echo -n 'all:'
 for variant in "${variants[@]}"; do
+	[ "$variant" = 'base' ] && continue # "boot2docker-base.iso" shouldn't be part of the "all" target
 	echo -n " boot2docker-$variant.iso"
 done
 echo

@@ -1,0 +1,12 @@
+language: bash
+
+# for secret experimental features ;)
+sudo: 9000
+
+before_script:
+  - env | sort
+
+script:
+  - make all -j$(nproc)
+
+# vim:set et ts=2 sw=2:

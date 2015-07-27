@@ -4,6 +4,7 @@ RUN { \
 		echo 'VARIANT="VMware"'; \
 		echo 'VARIANT_ID=vmware'; \
 	} >> /etc/os-release
+RUN echo ' (vmware)' >> /tmp/iso/version
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		$(dpkg-query --show --showformat='${Package}\n' | awk '/^linux-image-[0-9]/ { gsub(/-image-/, "-headers-"); print }') \

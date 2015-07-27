@@ -4,6 +4,7 @@ RUN { \
 		echo 'VARIANT="Hyper-V"'; \
 		echo 'VARIANT_ID=hyperv'; \
 	} >> /etc/os-release
+RUN echo ' (hyperv)' >> /tmp/iso/version
 
 # we need "hyperv-daemons" which only exists in experimental right now
 RUN echo 'deb http://httpredir.debian.org/debian experimental main' > /etc/apt/sources.list.d/experimental.list

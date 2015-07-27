@@ -4,6 +4,7 @@ RUN { \
 		echo 'VARIANT="VirtualBox"'; \
 		echo 'VARIANT_ID=virtualbox'; \
 	} >> /etc/os-release
+RUN echo ' (virtualbox)' >> /tmp/iso/version
 
 RUN sed -i 's/ main$/ main contrib/' /etc/apt/sources.list
 RUN apt-get update && apt-get install -y --no-install-recommends \

@@ -47,4 +47,7 @@ COPY scripts/autoformat.sh /usr/local/sbin/
 COPY inits/autoformat /etc/init.d/
 RUN update-rc.d autoformat defaults
 
+COPY inits/boot2docker-hooks-* /etc/init.d/
+RUN for t in before after; do ( set -x && update-rc.d boot2docker-hooks-$t-docker defaults ); done
+
 #RUN build-iso.sh # creates /tmp/docker.iso

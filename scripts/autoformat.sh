@@ -4,6 +4,7 @@ set -e
 preferLabel='data'
 mountPoint='/mnt/data'
 forceMkdir=(
+	/etc/boot2docker
 	/etc/docker
 	/home/docker
 )
@@ -14,7 +15,7 @@ persist=(
 	/etc/systemd/system/docker.service
 	/etc/timezone
 )
-mkdir -p "${forceMkdir[@]}" /etc/ssh
+mkdir -p "${forceMkdir[@]}" /etc/ssh /etc/boot2docker/hooks/{before,after}-docker.d
 touch "${persist[@]}"
 
 if [ ! -s /etc/systemd/system/docker.service ]; then

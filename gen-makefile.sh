@@ -16,10 +16,6 @@ cat <<'EOB'
 	@echo; echo
 	@ls -lh $^
 .PHONY: all
-
-clean:
-	rm -v boot2docker-*.iso
-.PHONY: clean
 EOB
 
 for variant in "${variants[@]}"; do

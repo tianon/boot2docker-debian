@@ -16,11 +16,11 @@ docker-build.base: Dockerfile.base scripts/generate-ssh-host-keys.sh inits/ssh-k
 	@echo
 	@docker images dockercore/boot2docker | awk 'NR == 1 || $$2 == "base" { print }'
 	@echo
-.PHONY: docker-build.base
-
+explore-base: docker-build.base
+	docker run -it --rm dockercore/boot2docker:base
 audit-base: docker-build.base
 	docker run -it --rm dockercore/boot2docker:base sh -c 'audit-rootfs.sh 2>&1 | sort | less'
-.PHONY: audit-base
+.PHONY: docker-build.base explore-base audit-base
 
 boot2docker-generic.iso: docker-build.generic
 	docker run --rm dockercore/boot2docker:generic sh -c 'build-iso.sh >&2 && cat /tmp/docker.iso' > $@
@@ -31,11 +31,11 @@ docker-build.generic: Dockerfile.generic scripts/autoformat.sh inits/autoformat.
 	@echo
 	@docker images dockercore/boot2docker | awk 'NR == 1 || $$2 == "generic" { print }'
 	@echo
-.PHONY: docker-build.generic
-
+explore-generic: docker-build.generic
+	docker run -it --rm dockercore/boot2docker:generic
 audit-generic: docker-build.generic
 	docker run -it --rm dockercore/boot2docker:generic sh -c 'audit-rootfs.sh 2>&1 | sort | less'
-.PHONY: audit-generic
+.PHONY: docker-build.generic explore-generic audit-generic
 
 boot2docker-hyperv.iso: docker-build.hyperv
 	docker run --rm dockercore/boot2docker:hyperv sh -c 'build-iso.sh >&2 && cat /tmp/docker.iso' > $@
@@ -46,11 +46,11 @@ docker-build.hyperv: Dockerfile.hyperv docker-build.generic
 	@echo
 	@docker images dockercore/boot2docker | awk 'NR == 1 || $$2 == "hyperv" { print }'
 	@echo
-.PHONY: docker-build.hyperv
-
+explore-hyperv: docker-build.hyperv
+	docker run -it --rm dockercore/boot2docker:hyperv
 audit-hyperv: docker-build.hyperv
 	docker run -it --rm dockercore/boot2docker:hyperv sh -c 'audit-rootfs.sh 2>&1 | sort | less'
-.PHONY: audit-hyperv
+.PHONY: docker-build.hyperv explore-hyperv audit-hyperv
 
 boot2docker-parallels.iso: docker-build.parallels
 	docker run --rm dockercore/boot2docker:parallels sh -c 'build-iso.sh >&2 && cat /tmp/docker.iso' > $@
@@ -61,11 +61,11 @@ docker-build.parallels: Dockerfile.parallels docker-build.generic
 	@echo
 	@docker images dockercore/boot2docker | awk 'NR == 1 || $$2 == "parallels" { print }'
 	@echo
-.PHONY: docker-build.parallels
-
+explore-parallels: docker-build.parallels
+	docker run -it --rm dockercore/boot2docker:parallels
 audit-parallels: docker-build.parallels
 	docker run -it --rm dockercore/boot2docker:parallels sh -c 'audit-rootfs.sh 2>&1 | sort | less'
-.PHONY: audit-parallels
+.PHONY: docker-build.parallels explore-parallels audit-parallels
 
 boot2docker-virtualbox.iso: docker-build.virtualbox
 	docker run --rm dockercore/boot2docker:virtualbox sh -c 'build-iso.sh >&2 && cat /tmp/docker.iso' > $@
@@ -76,11 +76,11 @@ docker-build.virtualbox: Dockerfile.virtualbox docker-build.generic
 	@echo
 	@docker images dockercore/boot2docker | awk 'NR == 1 || $$2 == "virtualbox" { print }'
 	@echo
-.PHONY: docker-build.virtualbox
-
+explore-virtualbox: docker-build.virtualbox
+	docker run -it --rm dockercore/boot2docker:virtualbox
 audit-virtualbox: docker-build.virtualbox
 	docker run -it --rm dockercore/boot2docker:virtualbox sh -c 'audit-rootfs.sh 2>&1 | sort | less'
-.PHONY: audit-virtualbox
+.PHONY: docker-build.virtualbox explore-virtualbox audit-virtualbox
 
 boot2docker-vmware.iso: docker-build.vmware
 	docker run --rm dockercore/boot2docker:vmware sh -c 'build-iso.sh >&2 && cat /tmp/docker.iso' > $@
@@ -91,8 +91,8 @@ docker-build.vmware: Dockerfile.vmware docker-build.generic
 	@echo
 	@docker images dockercore/boot2docker | awk 'NR == 1 || $$2 == "vmware" { print }'
 	@echo
-.PHONY: docker-build.vmware
-
+explore-vmware: docker-build.vmware
+	docker run -it --rm dockercore/boot2docker:vmware
 audit-vmware: docker-build.vmware
 	docker run -it --rm dockercore/boot2docker:vmware sh -c 'audit-rootfs.sh 2>&1 | sort | less'
-.PHONY: audit-vmware
+.PHONY: docker-build.vmware explore-vmware audit-vmware

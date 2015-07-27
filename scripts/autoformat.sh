@@ -12,6 +12,7 @@ persist=(
 	/etc/default/docker
 	/etc/hostname
 	/etc/systemd/system/docker.service
+	/etc/timezone
 )
 mkdir -p "${forceMkdir[@]}" /etc/ssh
 touch "${persist[@]}"
@@ -71,6 +72,9 @@ post_mount() {
 		sedEscapedHost="$(echo "$host" | sed 's/[\/&]/\\&/g')"
 		sed -ri 's/\bdocker\b/'"$sedEscapedHost"'/g' /etc/hosts
 	fi
+
+	# update /etc/localtime appropriately based on /etc/timezone
+	dpkg-reconfigure --frontend noninteractive tzdata
 }
 
 if [ -e "/dev/disk/by-label/$preferLabel" ]; then

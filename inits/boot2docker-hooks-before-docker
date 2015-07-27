@@ -1,0 +1,34 @@
+#!/bin/sh
+set -e
+
+### BEGIN INIT INFO
+# Provides:          hooks-before-docker
+# X-Start-Before:    docker
+# Required-Start:    $remote_fs autoformat
+# Required-Stop:     $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: boot2docker hooks: before-docker
+# Description:       Run scripts from /etc/boot2docker/hooks/before-docker.d
+#                    before Docker starts up.
+### END INIT INFO
+
+. /lib/lsb/init-functions
+
+if /etc/init.d/docker status &> /dev/null; then
+	echo >&2 'warning: Docker appears to be running!'
+fi
+
+case "$1" in
+	start|restart|reload|force-reload)
+		for hook in /etc/boot2docker/hooks/before-docker.d/*.sh; do
+			if [ -x "$hook" ]; then
+				"$hook"
+			fi
+		done
+		exit 0
+		;;
+	stop|status)
+		exit 0
+		;;
+esac

@@ -32,6 +32,12 @@ for variant in "${variants[@]}"; do
 	cat <<EOB
 
 boot2docker-$variant.iso: docker-build.$variant
+	# TODO figure out a nice clean way we can be able to Ctrl+C this step
+	#   constraints:
+	#     - can't just use a bind mount since that won't work well against non-local daemons
+	#     - "docker cp" is inconsistent wrt files vs directories (https://github.com/docker/docker/pull/13171 might help)
+	#     - can't add "-t" because then output redirection doesn't work properly
+	# if you need to cancel, use "docker ps" to find the container, and then use "docker kill" to stop it
 	docker run --rm $image:$variant sh -c 'build-iso.sh >&2 && cat /tmp/docker.iso' > \$@
 	@ls -lh \$@
 

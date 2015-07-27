@@ -1,5 +1,5 @@
-.depends: Dockerfile.*
-	./gen-makefile.sh > $@
+.depends: gen-makefile.sh Dockerfile.*
+	./$< > $@
 
 sinclude .depends
 

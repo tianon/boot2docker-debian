@@ -2,7 +2,7 @@
 set -e
 
 ### BEGIN INIT INFO
-# Provides:          hooks-before-docker
+# Provides:          boot2docker-hooks-before-docker
 # X-Start-Before:    docker
 # Required-Start:    $remote_fs autoformat
 # Required-Stop:     $remote_fs

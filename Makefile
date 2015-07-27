@@ -1,4 +1,4 @@
-all: boot2docker-base.iso boot2docker-generic.iso boot2docker-hyperv.iso boot2docker-virtualbox.iso boot2docker-vmware.iso
+all: boot2docker-base.iso boot2docker-generic.iso boot2docker-hyperv.iso boot2docker-parallels.iso boot2docker-virtualbox.iso boot2docker-vmware.iso
 	@echo; echo
 	@ls -lh $^
 .PHONY: all
@@ -51,6 +51,21 @@ docker-build.hyperv: Dockerfile.hyperv docker-build.generic
 audit-hyperv: docker-build.hyperv
 	docker run -it --rm dockercore/boot2docker:hyperv sh -c 'audit-rootfs.sh 2>&1 | sort | less'
 .PHONY: audit-hyperv
+
+boot2docker-parallels.iso: docker-build.parallels
+	docker run --rm dockercore/boot2docker:parallels sh -c 'build-iso.sh >&2 && cat /tmp/docker.iso' > $@
+	@ls -lh $@
+
+docker-build.parallels: Dockerfile.parallels docker-build.generic
+	docker build -t dockercore/boot2docker:parallels -f $< .
+	@echo
+	@docker images dockercore/boot2docker | awk 'NR == 1 || $$2 == "parallels" { print }'
+	@echo
+.PHONY: docker-build.parallels
+
+audit-parallels: docker-build.parallels
+	docker run -it --rm dockercore/boot2docker:parallels sh -c 'audit-rootfs.sh 2>&1 | sort | less'
+.PHONY: audit-parallels
 
 boot2docker-virtualbox.iso: docker-build.virtualbox
 	docker run --rm dockercore/boot2docker:virtualbox sh -c 'build-iso.sh >&2 && cat /tmp/docker.iso' > $@

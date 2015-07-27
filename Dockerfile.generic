@@ -48,6 +48,11 @@ COPY inits/autoformat /etc/init.d/
 RUN update-rc.d autoformat defaults
 
 COPY inits/boot2docker-hooks-* /etc/init.d/
-RUN for t in before after; do ( set -x && update-rc.d boot2docker-hooks-$t-docker defaults ); done
+RUN set -ex \
+	&& for t in before after; do \
+		update-rc.d boot2docker-hooks-$t-docker defaults; \
+		mkdir -p /etc/boot2docker/hooks/$t-docker.d; \
+	done \
+	&& chown -R docker:docker /etc/boot2docker
 
 #RUN build-iso.sh # creates /tmp/docker.iso

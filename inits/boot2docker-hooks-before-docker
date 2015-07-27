@@ -15,7 +15,7 @@ set -e
 
 . /lib/lsb/init-functions
 
-if /etc/init.d/docker status &> /dev/null; then
+if /etc/init.d/docker status > /dev/null 2>&1; then
 	echo >&2 'warning: Docker appears to be running!'
 fi
 

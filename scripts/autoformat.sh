@@ -15,7 +15,7 @@ persist=(
 	/etc/systemd/system/docker.service
 	/etc/timezone
 )
-mkdir -p "${forceMkdir[@]}" /etc/ssh /etc/boot2docker/hooks/{before,after}-docker.d
+mkdir -p "${forceMkdir[@]}" /etc/ssh
 touch "${persist[@]}"
 
 if [ ! -s /etc/systemd/system/docker.service ]; then
@@ -75,7 +75,17 @@ post_mount() {
 	fi
 
 	# update /etc/localtime appropriately based on /etc/timezone
-	dpkg-reconfigure --frontend noninteractive tzdata
+	#dpkg-reconfigure --frontend noninteractive tzdata
+	# we exclude dpkg-reconfigure from our ISO, so we get to embed the postinst script logic somewhat more directly here
+	# https://sources.debian.net/src/tzdata/2015d-0%2Bdeb8u1/debian/tzdata.postinst/#L28-L31
+	zoneinfoFile="/usr/share/zoneinfo/$(cat /etc/timezone)"
+	if [ -f "$zoneinfoFile" ]; then
+		cp -f "$zoneinfoFile" /etc/localtime.dpkg-new
+		mv -f /etc/localtime.dpkg-new /etc/localtime
+	else
+		echo >&2 "warning: $zoneinfoFile does not exist (from /etc/timezone)"
+		echo >&2 "  leaving /etc/localtime alone"
+	fi
 }
 
 if [ -e "/dev/disk/by-label/$preferLabel" ]; then

@@ -8,15 +8,15 @@ If you're not a maintainer of the boot2docker project, please try to refrain fro
 
 ## Commit Messages
 
-It's recommended that commit messages follow the following template, but not strictly required:
+It's recommended that commit messages can be applied against the following template and still be grammatically correct, but not strictly required:
 
 	If applied, this commit will <message>
 
-For example:
+For example, if the commit message was `Fix file sharing bugs`:
 
 	If applied, this commit will Fix file sharing bugs
 
-or:
+or `Add rainbow features`:
 
 	If applied, this commit will Add rainbow features
 

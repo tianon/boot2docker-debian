@@ -23,8 +23,22 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 #	&& apt-get install -y --no-install-recommends -f \
 #	&& rm -rf /var/lib/apt/lists/*
 
-RUN echo 'deb http://apt.dockerproject.org/repo debian-jessie main testing' > /etc/apt/sources.list.d/docker.list
 RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+RUN echo 'deb http://apt.dockerproject.org/repo debian-jessie main testing experimental' > /etc/apt/sources.list.d/docker.list
+RUN { \
+		echo 'Package: *'; \
+		echo 'Pin: release o=Docker, c=main'; \
+		echo 'Pin-Priority: 900'; \
+		echo; \
+		echo 'Package: *'; \
+		echo 'Pin: release o=Docker, c=testing'; \
+		echo 'Pin-Priority: 800'; \
+		echo; \
+		echo 'Package: *'; \
+		echo 'Pin: release o=Docker, c=experimental'; \
+		echo 'Pin-Priority: 700'; \
+	} > /etc/apt/preferences.d/docker
+
 ENV DOCKER_VERSION 1.7.1-0~jessie
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		docker-engine=$DOCKER_VERSION \

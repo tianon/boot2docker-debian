@@ -39,11 +39,16 @@ RUN { \
 		echo 'Pin-Priority: 700'; \
 	} > /etc/apt/preferences.d/docker
 
-ENV DOCKER_VERSION 1.7.1-0~jessie
+ENV DOCKER_VERSION 1.8.0~rc1-0~jessie
 #ENV DOCKER_VERSION 1.8.0~dev*
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		docker-engine=$DOCKER_VERSION \
 	&& rm -rf /var/lib/apt/lists/*
+# lucky us, 1.8.0-rc1 is missing a few things :)  (TODO remove these temporary hacks for rc2+)
+# (using ADD with a remote URL instead of wget since our wget comes from busybox and doesn't support the forced-https raw.githubusercontent.com forces)
+ADD https://raw.githubusercontent.com/docker/docker/v1.8.0-rc1/contrib/init/systemd/docker.service /lib/systemd/system/
+ADD https://raw.githubusercontent.com/docker/docker/v1.8.0-rc1/contrib/init/systemd/docker.socket /lib/systemd/system/
+RUN systemctl enable docker.service
 
 # PURE VANITY
 RUN { echo; docker -v; echo; } > /etc/motd

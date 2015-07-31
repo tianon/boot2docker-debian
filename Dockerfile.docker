@@ -49,8 +49,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN { echo; docker -v; echo; } > /etc/motd
 RUN docker -v > /tmp/iso/version
 RUN { \
-		echo 'PRETTY_NAME="'"$(docker -v)"'"'; \
-		echo 'NAME="Docker"'; \
+		echo 'PRETTY_NAME="boot2docker, '"$(docker -v)"'"'; \
+		echo 'NAME="boot2docker"'; \
 		echo 'VERSION_ID="'"$(docker -v | sed -r 's/.* version ([^ ,]+).*/\1/')"'"'; \
 		echo 'VERSION="'"$(dpkg-query --show --showformat='${Version}' docker-engine)"'"'; \
 		echo 'ID=docker'; \

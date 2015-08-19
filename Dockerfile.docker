@@ -39,7 +39,7 @@ RUN { \
 		echo 'Pin-Priority: 700'; \
 	} > /etc/apt/preferences.d/docker
 
-ENV DOCKER_VERSION 1.8.0~rc3-0~jessie
+ENV DOCKER_VERSION 1.8.1-0~jessie
 #ENV DOCKER_VERSION 1.8.0~dev*
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		docker-engine=$DOCKER_VERSION \

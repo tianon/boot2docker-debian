@@ -1,3 +1,7 @@
+# PREVIEW
+
+This repository is **a technical preview only** at this point.  If you are looking for boot2docker, you can find it at [github.com/boot2docker/boot2docker](https://github.com/boot2docker/boot2docker).
+
 # boot2docker
 
 This is the newly re-imagined boot2docker, based on Debian for stability and maintainability.  If you are looking for ["boot2docker (Legacy)", see github.com/boot2docker/boot2docker](https://github.com/boot2docker/boot2docker).

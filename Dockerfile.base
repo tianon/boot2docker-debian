@@ -9,6 +9,7 @@ RUN apt-get update \
 		ifupdown \
 		isc-dhcp-client \
 		linux-image-3.16.0-4-amd64 \
+		ntp \
 		openssh-server \
 		rsync \
 		sudo \
@@ -100,6 +101,9 @@ RUN set -e && { \
 	done; \
 } > /etc/inittab
 # TODO figure out a clean way to suppress the "respawning too fast" error so we can have ttyS1 back
+
+# setup NTP to use the boot2docker vendor pool instead of Debian's
+RUN sed -i 's/debian.pool.ntp.org/boot2docker.pool.ntp.org/g' /etc/ntp.conf
 
 # set a default LANG (sshd reads from here)
 # this prevents warnings later

@@ -1,2 +1,34 @@
-Tianon Gravi <tianon@dockerproject.org> (@tianon)
-Evan Hazlett <ejhazlett@gmail.com> (@ehazlett)
+# Boot2Docker maintainers file
+#
+# This file describes who runs the docker/boot2docker project and how.
+# This is a living document - if you see something out of date or missing, speak up!
+#
+# It is structured to be consumable by both humans and programs.
+# To extract its contents programmatically, use any TOML-compliant parser.
+#
+# This file is compiled into the MAINTAINERS file in docker/opensource.
+#
+[Org]
+	[Org."Core maintainers"]
+		people = [
+			"ehazlett",
+			"tianon",
+		]
+
+[people]
+
+# A reference list of all people associated with the project.
+# All other sections should refer to people by their canonical key
+# in the people section.
+
+	# ADD YOURSELF HERE IN ALPHABETICAL ORDER
+
+	[people.ehazlett]
+	Name = "Evan Hazlett"
+	Email = "ejhazlett@gmail.com"
+	GitHub = "ehazlett"
+
+	[people.tianon]
+	Name = "Tianon Gravi"
+	Email = "tianon@dockerproject.org"
+	GitHub = "tianon"

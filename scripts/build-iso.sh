@@ -15,6 +15,9 @@ EOH
 commonAppend='console=ttyS0 console=tty0 boot=live'
 extraAppend='cgroup_enable=memory swapaccount=1'
 
+# explicitly disable "Predictable Network Interface Names" since it causes troubles with our pre-determined /etc/network/interfaces* (and this fix is much easier than implementing our own auto-scan on boot or including network-manager)
+commonAppend+=' net.ifnames=0'
+
 declare -A inits=(
 	[sysvinit]='/lib/sysvinit/init'
 	[systemd]='/lib/systemd/systemd'
